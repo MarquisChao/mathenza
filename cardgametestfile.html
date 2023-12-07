@@ -1,0 +1,276 @@
+<html>
+<head>
+<h1 id="Gametitle"> Math Card Game:Math-enza</h1>
+<h2 id="PlayerOneTag"> Player 1</h2>
+<div id="GameMenu">
+    <button type="button" id="PlayButton">Play Game</button>
+    <br>
+    <label>(best played in fullscreen)</label>
+</div>
+</head>
+<body>
+<div id="GrabSection"> 
+    <button type="button" id="GrabCardButton">Grab Card</button>
+</div>
+<div id="StatusSection">
+</div>
+<h3 id="PlayerTwoTag"> Player 2</h3>
+<br>
+<div id="TimeStatus"></div>
+<br>
+<div id="ProblemSection">
+  <div id="Difficulty"></div>
+  <br>
+  <p id="GivenProblem">What is 3+1?</p>
+  <input type="" id="YourAnswer">
+  <button type="button" id="SubmitAnswerButton">Submit Answer</button>
+  <br>
+  <div id="CardStatus"></div> 
+  <br>
+  <p id="MultiplierSection">Roll the multiplier!
+    <button type="button" id="RollMultiplierButton">Roll it!</button>
+    <li id="MultiplierNumber"></li>
+  </p>
+  <br>
+  <label id="TotalPoints"></label>
+  <br>
+  <p id="ChoiceSection">Choose your move:
+      <select id="HealorAttack">
+          <option value="Heal">Heal</option>
+          <option value="Attack">Attack</option>
+      </select>
+      <button type="button" id="ConfirmChoiceButton">Confirm</button>
+  </p>
+</div>
+</body>
+<div id="TheWinner">
+  <label id="WhoWins"></label>
+  <button type="button" id="ToMenuButton">Back To Menu</button>
+  <button type="button" id="PlayAgainButton">Play Again</button>
+</div>
+</html>
+
+<style> 
+#Gametitle {
+  text-align: center;
+  font-size: 40px;
+}
+
+#GameMenu {
+  background-color: #eeeeee;
+  border: 4px solid yellow;
+  border-radius: 4px;
+  padding: 60px;
+  margin: 10px;
+  box-shadow: 10px 10px 5px #888888;
+  position: relative;
+  text-align: center;
+}
+
+#PlayerOneTag {
+  text-align: center;
+  background-color: #affffe;
+  border: 4px solid black;
+  border-radius: 4px;
+  position: relative;
+  width: 175px;
+  height: 22px;
+  left: 300px;
+}
+
+#PlayerTwoTag {
+  text-align: center;
+  background-color: #affffe;
+  border: 4px solid black;
+  border-radius: 4px;
+  position: relative;
+  width: 175px;
+  height: 22px;
+  left: 300px;
+  top: 100px;
+}
+
+#GrabSection {
+  background-color: #e8ee3e;
+  border: 4px solid black;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 10px;
+  height: 95px;
+  width: 65px;
+
+}
+
+#ProblemSection {
+  text-align: center;
+  font-size: 24px;
+  background-color: #e8a43e;
+  border: 4px solid black;
+  border-radius: 4px;
+  height: 540px;
+  width: 960px;
+  max-width: 960px;
+}
+#Difficulty {
+  text-align: left;
+  background-color: #a9af3e;
+  border: 4px solid black;
+  border-radius: 4px;
+  padding: 10px;
+  margin: 10px;
+  width: 110px;
+  height: 22px;
+}
+#TimeStatus{
+  width: 125px;
+  height: 24px;
+  border: 4px solid black;
+  
+}
+
+#TheWinner {
+  background-color: #eeeeee;
+  border: 4px solid yellow;
+  border-radius: 4px;
+  padding: 60px;
+  margin: 10px;
+  box-shadow: 10px 10px 5px #888888;
+  position: relative;
+  text-align: center;
+  font-size: 40px;
+}
+
+
+</style>
+
+<script> 
+var P1HP = 500
+var P2HP = 500
+var Pturn = 1
+document.getElementById("PlayerOneTag").innerHTML = "Player 1 HP:" + P1HP;
+document.getElementById("PlayerTwoTag").innerHTML = "Player 2 HP:" + P2HP;
+//everything in the game is hidden until player(s) click the button.
+TimeStatus.style.display = "none";
+PlayerOneTag.style.display = "none";
+PlayerTwoTag.style.display = "none";
+GrabSection.style.display = "none";
+ProblemSection.style.display = "none";
+TheWinner.style.display = "none";
+//<input type="string" id="youranswer"> also can work as an answer for future math problems.
+//defines PlayButton, which selects the ID from button "PlayButton" at HTML. This is the start button for the game.
+var PlayButton = document.getElementById("PlayButton");
+PlayButton.addEventListener("click", StartGame);
+//ToMenuButton.addeventListener("click",GoMenu);
+//PlayAgainButton.addEventListener("click",PlayAgain);
+GrabCardButton.addEventListener("click", GrabCard);
+function StartGame() {
+  /* This is the function to show and initiate the game cards, timer and other stuff. It hides the game title, button and div when the button is clicked.*/
+  //"block" makes display visible, while "none" makes it invisible.
+  Gametitle.style.display = "none";
+  PlayButton.style.display = "none";
+  GameMenu.style.display = "none";
+  GrabSection.style.display = "block";
+  PlayerOneTag.style.display = "block";
+  PlayerTwoTag.style.display = "block";
+  var PlayerTurn = 1
+}
+//Function for grabbing card.
+
+
+function GrabCard() {
+  SubmitAnswerButton.disabled = false;
+  GrabCardButton.disabled = true;
+  ProblemSection.style.display = "block";
+  GrabSection.style.display = "none";
+  PlayerOneTag.style.display = "none";
+  PlayerTwoTag.style.display = "none";
+  ChoiceSection.style.display = "none";
+  MultiplierSection.style.display = "none";
+  MultiplierNumber.style.display = "none";
+  var diffic_min = 1
+  var diffic_max = 10
+  var difficulty = Math.floor(Math.random() * (diffic_max - diffic_min) + diffic_min);
+  document.getElementById("Difficulty").innerHTML =  "Difficulty" + ":" + difficulty;
+  document.getElementById("CardStatus").innerHTML = "";
+  document.getElementById("TotalPoints").innerHTML = "";
+  //TimeStatus.style.display = "block";
+ //	do this later: CountDown(120,"TimeStatus"); 
+  var answerpenalty = 0
+
+	function CountDown(secs,elem) {
+	//time depends on seconds and the element.
+	var element = document.getElementById(elem);
+  element.innerHTML = "Timer:" + secs + "seconds";
+  if(secs < 1){
+  	clearTimeout(timer);  //<- clearTimeout is a built in function.
+    element.innerHTML = '<h2>Countdown Complete<h2>'; //selects element from JS to HTML to produce this output.
+
+  }
+  secs--;  //1000 milliseconds = 1 second.
+  var timer = setTimeout('CountDown('+secs+',"'+elem+'")',1000);  //<- setTimeout is also a 	built in function.
+}
+
+  //states specifically the (seconds, element) in the argument.
+  //penalty up to 2 times if both players get the same problem wrong.
+  SubmitAnswerButton.addEventListener("click", CheckAnswer);
+function CheckAnswer() {
+  var YourAnswer = Number(document.getElementById("YourAnswer").value);
+  var CorrectAnswer = 4;
+  if (YourAnswer == CorrectAnswer) {
+    SubmitAnswerButton.disabled = true;
+    RollMultiplierButton.disabled = false;
+    document.getElementById("CardStatus").innerHTML = "Correct";
+    MultiplierSection.style.display = "block";
+    MultiplierNumber.style.display = "none";
+    RollMultiplierButton.addEventListener("click", GetMultiplier);
+    var multiplier_num = 0
+    document.getElementById("MultiplierNumber").innerHTML = multiplier_num;
+  } else {
+    document.getElementById("CardStatus").innerHTML = "Incorrect";
+    answerpenalty++;
+ 
+  }
+ 
+}
+
+function GetMultiplier() {
+  RollMultiplierButton.disabled = true;
+  MultiplierNumber.style.display = "block";
+  var multi_min = 1
+  var multi_max = 10
+  var multiplier_num = Math.floor(Math.random() * (multi_max - multi_min) + multi_min);
+  document.getElementById("MultiplierNumber").innerHTML = multiplier_num;
+  ChoiceSection.style.display = "block";
+  var totalpoints = multiplier_num * difficulty;
+  document.getElementById("TotalPoints").innerHTML = "Total Points:" + totalpoints;
+ 
+ConfirmChoiceButton.addEventListener("click",ConfirmChoice);
+	function ConfirmChoice(HealorAttack) {
+
+	HealorAttack = document.getElementById("HealorAttack").value;
+  if (HealorAttack === "Heal"){
+   P1HP = P1HP + totalpoints; 
+   document.getElementById("PlayerOneTag").innerHTML = "Player 1 HP:" + P1HP;
+   
+  } else if (HealorAttack === "Attack"){
+   P1HP = P1HP - totalpoints; 
+   document.getElementById("PlayerOneTag").innerHTML = "Player 1 HP:" + P1HP;
+  }
+	ProblemSection.style.display = "none";
+  GrabSection.style.display = "block";
+  PlayerOneTag.style.display = "block";
+  PlayerTwoTag.style.display = "block";
+  GrabCardButton.disabled = false;
+  multiplier_num = 0;
+  /*if (P1HP <= 0){
+  	TheWinner.style.display = "block";
+  	GrabSection.style.display = "none";
+  	PlayerOneTag.style.display = "none";
+ 		PlayerTwoTag.style.display = "none";
+  	document.getElementById("WhoWins").innerHTML = "Player 2 wins!";
+    
+   }*/
+  }
+ }
+}
+</script>
